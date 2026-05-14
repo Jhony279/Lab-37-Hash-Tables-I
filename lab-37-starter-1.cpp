@@ -20,21 +20,26 @@ int main() {
         return 1;
     }
 
-    int total_sum = 0;
     while (getline(file, line)) {  // Read the file line by line
-        // Get hash index
-        int hash_index = get_hash_index(line);
+        string code = line;
 
-        // insert into hash table
-        hash_table[hash_index].push_back(line);
+        // Send the code to the hash function and receive its index
+        int hash_index = get_hash_index(code);
+
+        // Insert the code into the map at that hash index
+        list<string> &bucket = hash_table[hash_index];
+        bucket.push_back(code);
     }
     file.close();  // Close the file after reading
 
     int count = 0;
-    // Iterate through the map
+    // Display just the first 100 map entries to test the data structure
     for (auto it = hash_table.begin(); it != hash_table.end() && count < 100; ++it) {
-        // it->first is the integer hash index
-        cout << "Index " << it->first << " contains " << it->second.size() << " codes" << endl;
+        cout << "Index " << it->first << " contains: ";
+        for (const string &code : it->second) {
+            cout << code << ", ";
+        }
+        cout << endl;
         count++; // Keep track so we stop at 100
     }
 
