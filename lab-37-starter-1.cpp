@@ -1,12 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map>
+#include <list>
 using namespace std;
 
 const string FILENAME = "lab-37-data-3.txt";
-int sum_ascii(string);
+int get_hash_index(string);
 
 int main() {
+    // Map
+    map<int, list<string>> hash_table;
 
     // Open the file for reading
     ifstream file(FILENAME);
@@ -18,11 +22,13 @@ int main() {
 
     int total_sum = 0;
     while (getline(file, line)) {  // Read the file line by line
-        total_sum += sum_ascii(line);  // Calculate the sum of ASCII values for the line
+        // Get hash index
+        int hash_index = get_hash_index(line);
+
+        // insert into hash table
+        hash_table[hash_index].push_back(line);
     }
     file.close();  // Close the file after reading
-
-    cout << "Total sum of ASCII values: " << total_sum << endl;
 
 
     // char a = 'A';
@@ -35,7 +41,7 @@ int main() {
     return 0;
 }
 
-int sum_ascii(string s) {
+int get_hash_index(string s) {
     int sum = 0;
     
     // Loop through each character 'c' in the string 'text'
