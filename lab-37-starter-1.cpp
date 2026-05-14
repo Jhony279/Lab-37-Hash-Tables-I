@@ -7,11 +7,22 @@ const string FILENAME = "lab-37-data-3.txt";
 int sum_ascii(string);
 
 int main() {
+
+    // Open the file for reading
     ifstream file(FILENAME);
-    if (!file.is_open()) {
+    string line;
+    if (!file.is_open()) {  // Check if the file was opened successfully
         cout << "Error opening file: " << FILENAME << endl;
         return 1;
     }
+
+    int total_sum = 0;
+    while (getline(file, line)) {  // Read the file line by line
+        total_sum += sum_ascii(line);  // Calculate the sum of ASCII values for the line
+    }
+    file.close();  // Close the file after reading
+
+    cout << "Total sum of ASCII values: " << total_sum << endl;
 
 
     // char a = 'A';
@@ -20,9 +31,6 @@ int main() {
     // int b = 66;
     // cout << b << endl;
     // cout << (char) b << endl;
-    
-    int value = sum_ascii("Hello World");
-    cout << value << endl;
 
     return 0;
 }
