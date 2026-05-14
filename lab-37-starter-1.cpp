@@ -33,16 +33,8 @@ int main() {
     int count = 0;
     // Iterate through the map
     for (auto it = hash_table.begin(); it != hash_table.end() && count < 100; ++it) {
-        
         // it->first is the integer hash index
-        cout << "Index " << it->first << " contains: ";
-        
-        // it->second is the list<string>, so we loop through it to print the codes
-        for (string code : it->second) {
-            cout << code << ", ";
-        }
-        
-        cout << endl;
+        cout << "Index " << it->first << " contains " << it->second.size() << " codes" << endl;
         count++; // Keep track so we stop at 100
     }
 
