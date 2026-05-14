@@ -4,13 +4,15 @@ using namespace std;
 int sum_ascii(string);
 
 int main() {
-    char a = 'A';
-    cout << a << endl;
-    cout << (int) a << endl;
-    int b = 66;
-    cout << b << endl;
-    cout << (char) b << endl;
+    // char a = 'A';
+    // cout << a << endl;
+    // cout << (int) a << endl;
+    // int b = 66;
+    // cout << b << endl;
+    // cout << (char) b << endl;
     
+    int value = sum_ascii("Hello World");
+    cout << value << endl;
 
     return 0;
 }
