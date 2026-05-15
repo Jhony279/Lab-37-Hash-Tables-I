@@ -15,6 +15,7 @@ void print_first_100(const map<int, list<string>>&);
 void search_key(map<int, list<string>>&);
 void add_key(map<int, list<string>>&);
 void remove_key(map<int, list<string>>&);
+void modify_key(map<int, list<string>>&);
 
 int main() {
     // Map
@@ -63,6 +64,7 @@ int main() {
                 break;
 
             case 5:
+                modify_key(hash_table);
                 break;
 
             case 6:
@@ -147,7 +149,11 @@ void add_key(map<int, list<string>>& hash_table) {
     string key;
     cout << "Enter key to add: ";
     cin >> key;
+
+    // Check if the key already exists
     int hash_index = get_hash_index(key);
+
+    // Check if the hash index exists in the table
     hash_table[hash_index].push_back(key);
     cout << ">> Success. Key '" << key << "' added to index " << hash_index << ".\n";
 }
@@ -158,10 +164,11 @@ void remove_key(map<int, list<string>>& hash_table) {
     cin >> key;
     int hash_index = get_hash_index(key);
     
+    // Check if the hash index exists in the table
     if (hash_table.count(hash_index)) {
         auto& bucket = hash_table[hash_index];
         auto found = find(bucket.begin(), bucket.end(), key);
-        if (found != bucket.end()) {
+        if (found != bucket.end()) { // Key found, remove it
             bucket.erase(found);
             cout << ">> Success. Key '" << key << "' removed from index " << hash_index << ".\n";
             // Clean up empty buckets
@@ -173,5 +180,38 @@ void remove_key(map<int, list<string>>& hash_table) {
         }
     } else {
         cout << ">> Key '" << key << "' not found. Cannot remove.\n";
+    }
+}
+
+void modify_key(map<int, list<string>>& hash_table) {
+    string old_key, new_key;
+    cout << "Enter the existing key to modify: ";
+    cin >> old_key;
+    int old_index = get_hash_index(old_key);
+    
+    bool found_key = false;
+    // Check if the old key exists and remove it
+    if (hash_table.count(old_index)) {
+        auto& bucket = hash_table[old_index];
+        auto found = find(bucket.begin(), bucket.end(), old_key);
+        if (found != bucket.end()) {
+            // Remove the old key
+            bucket.erase(found);
+            if (bucket.empty()) hash_table.erase(old_index);
+            found_key = true;
+        }
+    }
+    
+    if (found_key) {
+        cout << "Enter the new key: ";
+        cin >> new_key;
+        int new_index = get_hash_index(new_key);
+        
+        // Add the new key to its new index
+        hash_table[new_index].push_back(new_key);
+        cout << ">> Success. Modified '" << old_key << "' to '" << new_key << "'.\n";
+        cout << ">> Moved from index " << old_index << " to index " << new_index << ".\n";
+    } else {
+        cout << ">> Key '" << old_key << "' not found. Cannot modify.\n";
     }
 }
