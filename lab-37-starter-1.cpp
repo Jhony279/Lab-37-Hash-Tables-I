@@ -3,10 +3,14 @@
 #include <string>
 #include <map>
 #include <list>
+#include <algorithm>
 using namespace std;
 
 const string FILENAME = "lab-37-data-3.txt";
+const int MAX_OPTIONS = 5;
+
 int get_hash_index(string);
+void print_first_100(const map<int, list<string>>& hash_table);
 
 int main() {
     // Map
@@ -32,27 +36,53 @@ int main() {
     }
     file.close();  // Close the file after reading
 
-    int total_printed = 0;
-    // Display the first 100 codes to test the data structure
-    for (auto it = hash_table.begin(); it != hash_table.end(); ++it) {
-        if (total_printed + (int)it->second.size() > 100) break;
-        cout << "Index " << it->first << " contains: ";
-        for (const string &code : it->second) {
-            cout << code << ", ";
+    int choice = 0;
+    bool again = true;
+    // Main menu loop
+    while (again) {
+        int sel = main_menu();
+        switch (sel) {
+            case 1:
+                break;
+
+            case 2:
+                break;
+
+            case 3:
+                break;
+
+            case 4:
+                break;
+
+            case 5:
+                again = false;
+            break;
+
+            default:
+                cout << "\nInvalid selection.\n";
+                break;
         }
-        cout << endl;
-        total_printed += it->second.size();
     }
 
-
-    // char a = 'A';
-    // cout << a << endl;
-    // cout << (int) a << endl;
-    // int b = 66;
-    // cout << b << endl;
-    // cout << (char) b << endl;
-
     return 0;
+}
+
+int main_menu() {
+    cout << "\n*** Main Menu ***\n";
+    cout << "[1] \n";
+    cout << "[2] \n";
+    cout << "[3] \n";
+    cout << "[4] \n";
+    cout << "[5] Quit\n";
+    cout << "Choice --> ";
+
+    int choice;
+    cin >> choice;
+    while (choice < 1 || choice > MAX_OPTIONS) {
+        cout << "Invalid, again --> ";
+        cin >> choice;
+    }
+    return choice;
 }
 
 int get_hash_index(string s) {
@@ -65,10 +95,19 @@ int get_hash_index(string s) {
     return sum;
 }
 
-/* 
-These targets are present in the dataset and can be used for testing:
-536B9DFC93AF
-1DA9D64D02A0
-666D109AA22E
-E1D2665B21EA
-*/
+void print_first_100(const map<int, list<string>>& hash_table) {
+    int total_printed = 0;
+    // We use const_iterator since we guarantee we won't modify the map here
+    for (auto it = hash_table.begin(); it != hash_table.end(); ++it) {
+        if (total_printed >= 100) break;
+        
+        cout << "Index " << it->first << " contains: ";
+        for (const string &code : it->second) {
+            cout << code << ", ";
+            total_printed++;
+            if (total_printed >= 100) break; 
+        }
+        cout << endl;
+    }
+    cout << "\nTotal items printed: " << total_printed << endl;
+}
