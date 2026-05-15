@@ -11,6 +11,8 @@ const int MAX_OPTIONS = 5;
 
 int get_hash_index(string);
 void print_first_100(const map<int, list<string>>& hash_table);
+void search_key(map<int, list<string>>& hash_table);
+void add_key(map<int, list<string>>& hash_table);
 
 int main() {
     // Map
@@ -43,9 +45,11 @@ int main() {
         int sel = main_menu();
         switch (sel) {
             case 1:
+                print_first_100(hash_table);
                 break;
 
             case 2:
+                search_key(hash_table);
                 break;
 
             case 3:
@@ -55,6 +59,9 @@ int main() {
                 break;
 
             case 5:
+                break;
+
+            case 6:
                 again = false;
             break;
 
@@ -69,11 +76,12 @@ int main() {
 
 int main_menu() {
     cout << "\n*** Main Menu ***\n";
-    cout << "[1] \n";
-    cout << "[2] \n";
-    cout << "[3] \n";
-    cout << "[4] \n";
-    cout << "[5] Quit\n";
+    cout << "[1] Print First 100 Items\n";
+    cout << "[2] Search Key\n";
+    cout << "[3] Add Key\n";
+    cout << "[4] Delete Key\n";
+    cout << "[5] Modify key\n";
+    cout << "[6] Quit\n";
     cout << "Choice --> ";
 
     int choice;
@@ -97,7 +105,7 @@ int get_hash_index(string s) {
 
 void print_first_100(const map<int, list<string>>& hash_table) {
     int total_printed = 0;
-    // We use const_iterator since we guarantee we won't modify the map here
+    // Iterate through the hash table and print the first 100 items
     for (auto it = hash_table.begin(); it != hash_table.end(); ++it) {
         if (total_printed >= 100) break;
         
