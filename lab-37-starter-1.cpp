@@ -7,12 +7,14 @@
 using namespace std;
 
 const string FILENAME = "lab-37-data-3.txt";
-const int MAX_OPTIONS = 5;
+const int MAX_OPTIONS = 6;
 
+int main_menu();
 int get_hash_index(string);
-void print_first_100(const map<int, list<string>>& hash_table);
-void search_key(map<int, list<string>>& hash_table);
-void add_key(map<int, list<string>>& hash_table);
+void print_first_100(const map<int, list<string>>&);
+void search_key(map<int, list<string>>&);
+void add_key(map<int, list<string>>&);
+void remove_key(map<int, list<string>>&);
 
 int main() {
     // Map
@@ -53,9 +55,11 @@ int main() {
                 break;
 
             case 3:
+                add_key(hash_table);
                 break;
 
             case 4:
+                remove_key(hash_table);
                 break;
 
             case 5:
@@ -63,7 +67,7 @@ int main() {
 
             case 6:
                 again = false;
-            break;
+                break;
 
             default:
                 cout << "\nInvalid selection.\n";
@@ -118,4 +122,56 @@ void print_first_100(const map<int, list<string>>& hash_table) {
         cout << endl;
     }
     cout << "\nTotal items printed: " << total_printed << endl;
+}
+
+void search_key(map<int, list<string>>& hash_table) {
+    string key;
+    cout << "Enter key to search for: ";
+    cin >> key;
+    int hash_index = get_hash_index(key);
+    
+    if (hash_table.count(hash_index)) {
+        auto& bucket = hash_table[hash_index];
+        auto found = find(bucket.begin(), bucket.end(), key);
+        if (found != bucket.end()) {
+            cout << ">> Found! Key '" << key << "' is located at index " << hash_index << ".\n";
+        } else {
+            cout << ">> Key '" << key << "' not found.\n";
+        }
+    } else {
+        cout << ">> Key '" << key << "' not found.\n";
+    }
+}
+
+void add_key(map<int, list<string>>& hash_table) {
+    string key;
+    cout << "Enter key to add: ";
+    cin >> key;
+    int hash_index = get_hash_index(key);
+    hash_table[hash_index].push_back(key);
+    cout << ">> Success. Key '" << key << "' added to index " << hash_index << ".\n";
+}
+
+void remove_key(map<int, list<string>>& hash_table) {
+    string key;
+    cout << "Enter key to remove: ";
+    cin >> key;
+    int hash_index = get_hash_index(key);
+    
+    if (hash_table.count(hash_index)) {
+        auto& bucket = hash_table[hash_index];
+        auto found = find(bucket.begin(), bucket.end(), key);
+        if (found != bucket.end()) {
+            bucket.erase(found);
+            cout << ">> Success. Key '" << key << "' removed from index " << hash_index << ".\n";
+            // Clean up empty buckets
+            if (bucket.empty()) {
+                hash_table.erase(hash_index);
+            }
+        } else {
+            cout << ">> Key '" << key << "' not found. Cannot remove.\n";
+        }
+    } else {
+        cout << ">> Key '" << key << "' not found. Cannot remove.\n";
+    }
 }
