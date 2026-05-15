@@ -32,15 +32,16 @@ int main() {
     }
     file.close();  // Close the file after reading
 
-    int count = 0;
-    // Display just the first 100 map entries to test the data structure
-    for (auto it = hash_table.begin(); it != hash_table.end() && count < 100; ++it) {
+    int total_printed = 0;
+    // Display the first 100 codes to test the data structure
+    for (auto it = hash_table.begin(); it != hash_table.end(); ++it) {
+        if (total_printed + (int)it->second.size() > 100) break;
         cout << "Index " << it->first << " contains: ";
         for (const string &code : it->second) {
             cout << code << ", ";
         }
         cout << endl;
-        count++; // Keep track so we stop at 100
+        total_printed += it->second.size();
     }
 
 
